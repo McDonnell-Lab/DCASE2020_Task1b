@@ -13,9 +13,10 @@ pip install zenodo_get
 
 conda activate DCASE2020
 
-#cd /RAID5/mdmcdonn-data/DCASE2020/Temp/
-
 mkdir Data
 cd Data
 
+#DCASE Task 1b
 zenodo_get https://zenodo.org/record/3670185#.XmW-ehdLfUp
+
+for z in *.zip; do unzip "$z"; done
