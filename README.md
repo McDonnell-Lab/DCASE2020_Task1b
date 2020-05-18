@@ -1,6 +1,6 @@
 Info on the DCASE challenge can be found here: http://dcase.community/challenge2020/task-acoustic-scene-classification
 
-For this repositor (https://github.com/McDonnell-Lab/DCASE2020), the following are strongly recommended:
+For this repository (https://github.com/McDonnell-Lab/DCASE2020), the following are strongly recommended:
 
 1. Ubuntu >= 16.04 
 2. a working high end GPU with >= 11 GB RAM and drivers capabale of running tensorflow 1.13 or higher 
