@@ -8,7 +8,7 @@ eval "$(conda shell.bash hook)"
 conda activate DCASE2020
 
 conda install -y -c anaconda tensorflow-gpu=1.15
-conda install -c conda-forge librosa
+conda install -y -c conda-forge librosa
 
 pip install zenodo_get 
 pip install SoundFile
