@@ -1,0 +1,838 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TAU Urban Acoustic Scenes 2020 3Class, Development dataset</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.0/dist/bootstrap-toc.min.css"> 
+    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.0/dist/bootstrap-toc.min.js"></script>
+
+    <style>        
+        p {
+            text-align: justify;
+        }
+        nav[data-toggle='toc'] {
+            top: 42px;
+        }
+        @media (max-width: 768px) {
+          nav[data-toggle='toc'] {
+            margin-bottom: 42px;
+            position: static;
+          }
+          nav[data-toggle='toc'] .nav .nav {
+            display: block;
+          }
+        }
+        pre {
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+    <div class="container">
+        <div class="row">                            
+            <div class="col-sm-3">
+                <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+            </div>
+            <div class="col-sm-9">
+                <h1>TAU Urban Acoustic Scenes 2020 3Class, Development dataset</h1>
+<p><a href="http://arg.cs.tut.fi/">Audio Research Group / Tampere University</a></p>
+<p>Authors</p>
+<ul>
+<li>Toni Heittola (<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#111;&#110;&#105;&#46;&#104;&#101;&#105;&#116;&#116;&#111;&#108;&#97;&#64;&#116;&#117;&#110;&#105;&#46;&#102;&#105;">&#116;&#111;&#110;&#105;&#46;&#104;&#101;&#105;&#116;&#116;&#111;&#108;&#97;&#64;&#116;&#117;&#110;&#105;&#46;&#102;&#105;</a>, <a href="http://www.cs.tut.fi/~heittolt/">http://www.cs.tut.fi/~heittolt/</a>)</li>
+<li>Annamaria Mesaros (<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#110;&#110;&#97;&#109;&#97;&#114;&#105;&#97;&#46;&#109;&#101;&#115;&#97;&#114;&#111;&#115;&#64;&#116;&#117;&#110;&#105;&#46;&#102;&#105;">&#97;&#110;&#110;&#97;&#109;&#97;&#114;&#105;&#97;&#46;&#109;&#101;&#115;&#97;&#114;&#111;&#115;&#64;&#116;&#117;&#110;&#105;&#46;&#102;&#105;</a>, <a href="http://www.cs.tut.fi/~mesaros/">http://www.cs.tut.fi/~mesaros/</a>)</li>
+<li>Tuomas Virtanen (<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#117;&#111;&#109;&#97;&#115;&#46;&#118;&#105;&#114;&#116;&#97;&#110;&#101;&#110;&#64;&#116;&#117;&#110;&#105;&#46;&#102;&#105;">&#116;&#117;&#111;&#109;&#97;&#115;&#46;&#118;&#105;&#114;&#116;&#97;&#110;&#101;&#110;&#64;&#116;&#117;&#110;&#105;&#46;&#102;&#105;</a>, <a href="http://www.cs.tut.fi/~tuomasv/">http://www.cs.tut.fi/~tuomasv/</a>)</li>
+</ul>
+<p>Recording and annotation</p>
+<ul>
+<li>Henri Laakso</li>
+<li>Ronal Bejarano Rodriguez</li>
+<li>Toni Heittola</li>
+</ul>
+<h2>1. Dataset</h2>
+<p>TAU Urban Acoustic Scenes 2020 3Class development dataset consists of 10-seconds audio segments from 10 acoustic scenes grouped into <strong>three major classes</strong> as follows:</p>
+<ul>
+<li>Indoor scenes - <code>indoor</code>: airport, indoor shopping mall, and metro station</li>
+<li>Outdoor scenes - <code>outdoor</code>: pedestrian street, public square, street with medium level of traffic, and urban park</li>
+<li>Transportation related scenes - <code>transportation</code>: travelling by a bus, travelling by a tram, travelling by an underground metro</li>
+</ul>
+<p>The dataset contains in total 40 hours of audio.</p>
+<p>The dataset was collected by Tampere University of Technology between 05/2018 - 11/2018. The data collection has received funding from the European Research Council under the ERC Grant Agreement 637422 EVERYSOUND.</p>
+<p><a href="https://erc.europa.eu/"><img alt="ERC" src="https://erc.europa.eu/sites/default/files/content/erc_banner-horizontal.jpg" title="ERC" /></a></p>
+<h3>Preparation of the dataset</h3>
+<p>The dataset was recorded in 12 large European cities: Amsterdam, Barcelona, Helsinki, Lisbon, London, Lyon, Madrid, Milan, Prague, Paris, Stockholm, and Vienna. For all acoustic scenes, audio was captured in multiple locations: different streets, different parks, different shopping malls. In each location, multiple 2-3 minute long audio recordings were captured in a few slightly different positions (2-4) within the selected location. Collected audio material was cut into segments of 10 seconds length. Acoustic scenes were grouped into <strong>three major classes</strong>: indoor, outdoor, and transportation.</p>
+<p>The equipment used for recording consists of a binaural <a href="http://www.soundman.de/en/products/">Soundman OKM II Klassik/studio A3</a> electret in-ear microphone and a <a href="https://www.zoom.co.jp/products/handy-recorder/zoom-f8-multitrack-field-recorder">Zoom F8</a> audio recorder using 48 kHz sampling rate and 24 bit resolution. During the recording, the microphones were worn by the recording person in the ears, and head movement was kept to minimum.</p>
+<p>Post-processing of the recorded audio involves aspects related to privacy of recorded individuals, and possible errors in the recording process. The material was screened for content, and segments containing close microphone conversation were eliminated. Some interferences from mobile phones are audible, but are considered part of real-world recording process.</p>
+<p>A subset of the dataset has been previously published as TUT Urban Acoustic Scenes 2019 Development dataset. Audio segment filenames are retained for the segments coming from this dataset.</p>
+<h3>Dataset statistics</h3>
+<p>The development dataset contains audio material from 10 cities, whereas the evalution dataset (TAU Urban Acoustic Scenes 2020 3Class, evaluation) contains data from all 12 cities. The dataset is perfectly balanced at acoustic scene level, with very slight differences in the number of segments from each city.</p>
+<h4>Audio segments</h4>
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Class</th>
+<th>Segments</th>
+<th>Barcelona</th>
+<th>Helsinki</th>
+<th>Lisbon</th>
+<th>London</th>
+<th>Lyon</th>
+<th>Milan</th>
+<th> Paris</th>
+<th>Prague</th>
+<th>Stockholm</th>
+<th>Vienna</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Indoor</td>
+<td>4320</td>
+<td>416</td>
+<td>437</td>
+<td>432</td>
+<td> 433</td>
+<td>432</td>
+<td>432</td>
+<td>444</td>
+<td>432</td>
+<td>446</td>
+<td>416</td>
+</tr>
+<tr>
+<td>Outdoor</td>
+<td>5760</td>
+<td>577</td>
+<td>577</td>
+<td>576</td>
+<td> 577</td>
+<td>576</td>
+<td>576</td>
+<td>576</td>
+<td>576</td>
+<td>577</td>
+<td>572</td>
+</tr>
+<tr>
+<td>Transportation</td>
+<td>4320</td>
+<td>428</td>
+<td>433</td>
+<td>432</td>
+<td> 434</td>
+<td>432</td>
+<td>432</td>
+<td>432</td>
+<td>432</td>
+<td>433</td>
+<td>432</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>14400</strong></td>
+<td><strong>1421</strong></td>
+<td><strong>1447</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1444</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1452</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1456</strong></td>
+<td> <strong>1420</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Acoustic scene classes</strong></p>
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Acoustic scene class</th>
+<th>Segments</th>
+<th>Barcelona</th>
+<th>Helsinki</th>
+<th>Lisbon</th>
+<th>London</th>
+<th>Lyon</th>
+<th>Milan</th>
+<th> Paris</th>
+<th>Prague</th>
+<th>Stockholm</th>
+<th>Vienna</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Airport</td>
+<td>1440</td>
+<td>128</td>
+<td>149</td>
+<td>144</td>
+<td> 145</td>
+<td>144</td>
+<td>144</td>
+<td>156</td>
+<td>144</td>
+<td>158</td>
+<td>128</td>
+</tr>
+<tr>
+<td>Bus</td>
+<td>1440</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Metro</td>
+<td>1440</td>
+<td>141</td>
+<td>144</td>
+<td>144</td>
+<td> 146</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>145</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Metro station</td>
+<td>1440</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Park</td>
+<td>1440</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Public square</td>
+<td>1440</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Shopping mall</td>
+<td>1440</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Street, pedestrian</td>
+<td>1440</td>
+<td>145</td>
+<td>145</td>
+<td>144</td>
+<td> 145</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>145</td>
+<td>140</td>
+</tr>
+<tr>
+<td>Street, traffic</td>
+<td>1440</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td>Tram</td>
+<td>1440</td>
+<td>143</td>
+<td>145</td>
+<td>144</td>
+<td> 144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+<td>144</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>14400</strong></td>
+<td><strong>1421</strong></td>
+<td><strong>1447</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1444</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1452</strong></td>
+<td><strong>1440</strong></td>
+<td><strong>1456</strong></td>
+<td> <strong>1420</strong></td>
+</tr>
+</tbody>
+</table>
+<h4>Recording locations</h4>
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Class</th>
+<th>Locations</th>
+<th>Barcelona</th>
+<th>Helsinki</th>
+<th>Lisbon</th>
+<th>London</th>
+<th>Lyon</th>
+<th>Milan</th>
+<th> Paris</th>
+<th>Prague</th>
+<th>Stockholm</th>
+<th>Vienna</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Indoor</td>
+<td>133</td>
+<td>13</td>
+<td>13</td>
+<td>12</td>
+<td>17</td>
+<td>12</td>
+<td>11</td>
+<td>17</td>
+<td>14</td>
+<td>13</td>
+<td> 11</td>
+</tr>
+<tr>
+<td>Outdoor</td>
+<td>173</td>
+<td>19</td>
+<td>16</td>
+<td>16</td>
+<td>17</td>
+<td>17</td>
+<td>19</td>
+<td>17</td>
+<td>19</td>
+<td>17</td>
+<td> 16</td>
+</tr>
+<tr>
+<td>Transportation</td>
+<td>208</td>
+<td>11</td>
+<td>13</td>
+<td>28</td>
+<td>20</td>
+<td>23</td>
+<td>26</td>
+<td>29</td>
+<td>31</td>
+<td>15</td>
+<td> 12</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>514</strong></td>
+<td><strong>43</strong></td>
+<td><strong>42</strong></td>
+<td><strong>56</strong></td>
+<td><strong>54</strong></td>
+<td><strong>52</strong></td>
+<td><strong>56</strong></td>
+<td><strong>63</strong></td>
+<td><strong>64</strong></td>
+<td><strong>45</strong></td>
+<td> <strong>39</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Acoustic scene classes</strong></p>
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Acoustic scene class</th>
+<th>Locations</th>
+<th>Barcelona</th>
+<th>Helsinki</th>
+<th>Lisbon</th>
+<th>London</th>
+<th>Lyon</th>
+<th>Milan</th>
+<th> Paris</th>
+<th>Prague</th>
+<th>Stockholm</th>
+<th>Vienna</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Airport</td>
+<td>40</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>6</td>
+<td>5</td>
+<td> 3</td>
+</tr>
+<tr>
+<td>Bus</td>
+<td>71</td>
+<td>4</td>
+<td>4</td>
+<td>11</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>11</td>
+<td>10</td>
+<td>6</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Metro</td>
+<td>67</td>
+<td>3</td>
+<td>5</td>
+<td>11</td>
+<td>4</td>
+<td>9</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>4</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Metro station</td>
+<td>57</td>
+<td>5</td>
+<td>6</td>
+<td>4</td>
+<td>12</td>
+<td>5</td>
+<td>4</td>
+<td>9</td>
+<td>4</td>
+<td>4</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Park</td>
+<td>41</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Public_square</td>
+<td>43</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>4</td>
+<td>6</td>
+<td>4</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Shopping mall</td>
+<td>36</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Street, pedestrian</td>
+<td>46</td>
+<td>7</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Street, traffic</td>
+<td>43</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>6</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td> 4</td>
+</tr>
+<tr>
+<td>Tram</td>
+<td>70</td>
+<td>4</td>
+<td>4</td>
+<td>6</td>
+<td>9</td>
+<td>7</td>
+<td>11</td>
+<td>9</td>
+<td>11</td>
+<td>5</td>
+<td> 4</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>514</strong></td>
+<td><strong>43</strong></td>
+<td><strong>42</strong></td>
+<td><strong>56</strong></td>
+<td><strong>54</strong></td>
+<td><strong>52</strong></td>
+<td><strong>56</strong></td>
+<td><strong>63</strong></td>
+<td><strong>64</strong></td>
+<td><strong>45</strong></td>
+<td> <strong>39</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>File structure</h3>
+<pre><code>dataset root
+│   README.md               this file, markdown-format
+│   README.html             this file, html-format
+│   meta.csv                meta data, csv-format with a header row, [audio file (string)][tab][class label (string)][tab][identifier (string)][tab][source_label (string)]
+│
+└───audio                   14400 audio segments, 24-bit 48kHz stereo
+│   │   airport-barcelona-0-0-a.wav     file naming convention: [scene label]-[city]-[location id]-[segment id]-[device id].wav
+│   │   airport-barcelona-0-1-a.wav
+│   │   airport-barcelona-0-3-a.wav
+│   │   ...
+│   │   airport-barcelona-1-17-a.wav
+│   │   airport-barcelona-1-18-a.wav
+│   │   ...
+│
+└───evaluation_setup        cross-validation setup, 1 fold
+    │   fold1_train.csv     training file list, csv-format with a header row, [audio file (string)][tab][class label (string)]
+    │   fold1_test.csv      testing file list, csv-format with a header row, [audio file (string)]
+    │   fold1_evaluate.csv  evaluation file list, fold1_test.txt with added ground truth, csv-format with a header row, [audio file (string)][tab][class label (string)]
+
+</code></pre>
+
+<h2>2. Usage</h2>
+<p>The partitioning of the data was done based on the location of the original recordings. All segments recorded at the same location were included into a single subset - either <strong>development dataset</strong> or <strong>evaluation dataset</strong>. For each acoustic scene, 1440 segments were included in the development dataset provided here. Evaluation dataset is provided separately.</p>
+<h3>Training / test setup</h3>
+<p>A suggested training/test partitioning of the development set is provided in order to make results reported with this dataset uniform. The partitioning is done such that the segments recorded at the same location are included into the same subset - either training or testing. The partitioning is done aiming for a 70/30 ratio between the number of segments in training and test subsets while taking into account recording locations, and selecting the closest available option. Audio segments coming from nine cities are used for training and all ten cities are used for testing (Milan is used only for testing). Since the dataset includes balanced amount of material from ten cities, this partitioning will leave a small subset of data from Milan unused in the training / test setup. This material can be used when using full dataset to train the system and testing it with evaluation dataset.</p>
+<p>The setup is provided with the dataset in the directory <code>evaluation_setup</code>.</p>
+<h4>Statistics</h4>
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Class</th>
+<th>Train / Segments</th>
+<th>Train / Locations</th>
+<th>Test / Segments</th>
+<th>Test / Locations</th>
+<th>Unused / Segments</th>
+<th>Unused / Locations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Indoor</td>
+<td>2704</td>
+<td>86</td>
+<td>1297</td>
+<td>39</td>
+<td>319</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Outdoor</td>
+<td>3757</td>
+<td>111</td>
+<td>1604</td>
+<td>49</td>
+<td>399</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Transportation</td>
+<td>2724</td>
+<td>128</td>
+<td>1284</td>
+<td>61</td>
+<td>312</td>
+<td>19</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>9185</strong></td>
+<td><strong>325</strong></td>
+<td><strong>4185</strong></td>
+<td><strong>149</strong></td>
+<td><strong>1030</strong></td>
+<td><strong>40</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Acoustic scene classes</strong></p>
+<table class="table table-striped table-hover table-sm">
+<thead>
+<tr>
+<th>Acoustic scene class</th>
+<th>Train / Segments</th>
+<th>Train / Locations</th>
+<th>Test / Segments</th>
+<th>Test / Locations</th>
+<th>Unused / Segments</th>
+<th>Unused / Locations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Airport</td>
+<td>911</td>
+<td>25</td>
+<td>421</td>
+<td>12</td>
+<td>108</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bus</td>
+<td>928</td>
+<td>46</td>
+<td>415</td>
+<td>20</td>
+<td>97</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Metro</td>
+<td>902</td>
+<td>41</td>
+<td>433</td>
+<td>20</td>
+<td>105</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Metro station</td>
+<td>897</td>
+<td>37</td>
+<td>435</td>
+<td>17</td>
+<td>108</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Park</td>
+<td>946</td>
+<td>27</td>
+<td>386</td>
+<td>11</td>
+<td>108</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Public square</td>
+<td>945</td>
+<td>28</td>
+<td>387</td>
+<td>12</td>
+<td>108</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Shopping mall</td>
+<td>896</td>
+<td>24</td>
+<td>441</td>
+<td>10</td>
+<td>103</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Street, pedestrian</td>
+<td>924</td>
+<td>29</td>
+<td>429</td>
+<td>14</td>
+<td>87</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Street, traffic</td>
+<td>942</td>
+<td>27</td>
+<td>402</td>
+<td>12</td>
+<td>96</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tram</td>
+<td>894</td>
+<td>41</td>
+<td>436</td>
+<td>21</td>
+<td>110</td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>9185</strong></td>
+<td><strong>325</strong></td>
+<td><strong>4185</strong></td>
+<td><strong>149</strong></td>
+<td><strong>1030</strong></td>
+<td><strong>40</strong></td>
+</tr>
+</tbody>
+</table>
+<h4>Training</h4>
+<dl>
+<dt><code>evaluation setup\fold1_train.csv</code></dt>
+<dd>training file list (in csv-format with a header row)</dd>
+</dl>
+<p>Format:</p>
+<pre><code>[audio file (string)][tab][scene label (string)]
+</code></pre>
+<h4>Testing</h4>
+<dl>
+<dt><code>evaluation setup\fold1_test.csv</code></dt>
+<dd>testing file list (in csv-format with a header row)</dd>
+</dl>
+<p>Format:
+    [audio file (string)]</p>
+<h4>Evaluating</h4>
+<dl>
+<dt><code>evaluation setup\fold1_evaluate.csv</code></dt>
+<dd>evaluation file list (in csv-format with a header row), same as <code>fold1_test.csv</code> but with additional reference information. These two files are provided separately to prevent contamination with ground truth when testing the system</dd>
+</dl>
+<p>Format:</p>
+<pre><code>[audio file (string)][tab][scene label (string)]
+</code></pre>
+<h3>Custom setups</h3>
+<p>If not using the provided training/test setup, pay attention to the segments recorded at the same location. Location identifier can be found from <code>meta.csv</code> or from audio file names:</p>
+<pre><code>[scene label]-[city]-[location id]-[segment id]-[device id].wav
+</code></pre>
+<p>Make sure that all files having <strong>same location id</strong> are placed on the same side of the evaluation. In this dataset, device id is always the same (<code>a</code>).</p>
+<h2>3. Changelog</h2>
+<p><strong>v1.0 / 2020-02-18</strong></p>
+<ul>
+<li>Initial commit</li>
+</ul>
+<h2>4. License</h2>
+<p>License permits free academic usage. Any commercial use is strictly prohibited. For commercial use, contact dataset authors.</p>
+<pre><code>Copyright (c) 2020 Tampere University and its licensors
+All rights reserved.
+Permission is hereby granted, without written agreement and without license or royalty
+fees, to use and copy the TAU Urban Acoustic Scenes 2020 Mobile (“Work”) described in this document
+and composed of audio and metadata. This grant is only for experimental and non-commercial
+purposes, provided that the copyright notice in its entirety appear in all copies of this Work,
+and the original source of this Work, (Audio Research Group at Tampere University of Technology),
+is acknowledged in any publication that reports research using this Work.
+Any commercial use of the Work or any part thereof is strictly prohibited.
+Commercial use include, but is not limited to:
+- selling or reproducing the Work
+- selling or distributing the results or content achieved by use of the Work
+- providing services by using the Work.
+
+IN NO EVENT SHALL TAMPERE UNIVERSITY OR ITS LICENSORS BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+OF THIS WORK AND ITS DOCUMENTATION, EVEN IF TAMPERE UNIVERSITY OR ITS
+LICENSORS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+TAMPERE UNIVERSITY AND ALL ITS LICENSORS SPECIFICALLY DISCLAIMS ANY
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE. THE WORK PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND
+THE TAMPERE UNIVERSITY HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+</code></pre>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+                
