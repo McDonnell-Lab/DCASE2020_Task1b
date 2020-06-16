@@ -3,13 +3,15 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.utils  import Sequence
 import numpy as np
 import copy
+import albumentations as A
 
 #for implementing warm restarts in learning rate
 class LR_WarmRestart(tensorflow.keras.callbacks.Callback):
     
-    #corrected by Mark McDonnell, 12 May 2020
+    '''I. Loshchilov and F. Hutter. SGDR: stochastic gradient descent with restarts.
+    http://arxiv.org/abs/1608.03983.'''
     
-    def __init__(self,nbatch,initial_lr,min_lr,epochs_restart):
+    def __init__(self,nbatch,initial_lr,min_lr,epochs_restart,Tmults):
         self.initial_lr = initial_lr
         self.min_lr = min_lr
         self.nbatch = nbatch
@@ -17,15 +19,22 @@ class LR_WarmRestart(tensorflow.keras.callbacks.Callback):
         self.startEP=1.0
         self.ThisBatch = 0.0
         self.lr_used=[]
-        self.Tmult=0.0
+        self.Tmults=Tmults
+        self.Tcount=0
         self.epochs_restart=epochs_restart
+        self.Init=False
         
     def on_epoch_begin(self, epoch, logs={}):
         self.currentEP = self.currentEP+1.0
         self.ThisBatch = 0.0
+        if self.Init==False:
+            K.set_value(self.model.optimizer.lr,self.initial_lr)
+            self.Init=True
         if np.isin(self.currentEP,self.epochs_restart):
             self.startEP=self.currentEP
-            self.Tmult=self.currentEP+1.0
+            #self.Tmult=self.currentEP+1.0
+            self.Tmult=self.Tmults[self.Tcount]
+            self.Tcount+=1
             K.set_value(self.model.optimizer.lr,self.initial_lr)
         print ('\n Start of Epoch Learning Rate = {:.6f}'.format(K.get_value(self.model.optimizer.lr)))
 
@@ -44,11 +53,19 @@ class LR_WarmRestart(tensorflow.keras.callbacks.Callback):
         self.lr_used.append(K.get_value(self.model.optimizer.lr))
         self.ThisBatch = self.ThisBatch + 1.0
 
+        
+        
+
+#data augmentations
+def get_training_augmentation():
+    train_transform = [
+        A.RandomCrop(height=256, width=400, always_apply=True, p=1.0)
+    ]
+    return A.Compose(train_transform)
 
 
 
-
-class MixupGenerator(Sequence):
+class MixupGenerator(tensorflow.keras.utils.Sequence):
     
     #generator of samples for training
     #applies the following data augmentation
@@ -56,65 +73,63 @@ class MixupGenerator(Sequence):
     #1. mixup (randomly adds to samples using weights, and does the same on their labels
     #2. crop: crops a random temporal window of length crop_length out of a longer spectrogram
     #3. random channel swap 
-    
-    #also optionally applies balanced undersamplng
-    
-    def __init__(self, X_train, y_train, batch_size=30, alpha=0.4, shuffle=True, crop_length=400,UseBalance=False): 
+   
+    def __init__(self, X_train, y_train, batch_size=30, alpha=0.4, crop_length=400,UseBalance=False):
+
+        self.augmentation1=get_training_augmentation()
+
         self.X_train = X_train
-        self.y_train = y_train
-        self.y_labels = np.argmax(y_train,axis=-1)
+        self.y_train = y_train #categorical
         self.num_channels = X_train.shape[-1]
-        
-        self.UseCount = np.zeros(self.y_train.shape[0])
         
         self.batch_size = batch_size
         self.alpha = alpha
-        self.shuffle = shuffle
-        self.sample_num = len(X_train)
-        self.NewLength = crop_length
-        if self.num_channels == 6:
-            self.swap_inds = [1,0,3,2,5,4]
-        elif self.num_channels == 4:
-            self.swap_inds = [1,0,3,2]
-        elif self.num_channels == 2:
-            self.swap_inds = [1,0]
-            
+        self.crop_length = crop_length
+        
+        #initial shuffle
         self.UseBalance=UseBalance
         
         if self.UseBalance:
+            self.y_labels=np.argmax(y_train,-1)
             Classes,self.ClassCounts = np.unique(self.y_labels,return_counts=True)
             self.num_classes = len(Classes)
-            self.reset_length = min(int(np.floor(self.num_classes*min(self.ClassCounts)/self.batch_size)),int(np.floor(self.X_train.shape[0]/self.batch_size)))
-            print('mixup samples per epoch with balanced undersampling =',self.reset_length*self.batch_size)
+            self.SamplesPerEpoch = self.num_classes*min(self.ClassCounts)
             self.ordering = self.ShuffleBalancedUnderSampling()
+            
         else:
             self.ordering = np.arange(X_train.shape[0])
             np.random.shuffle(self.ordering)
-        self.start_ind=0
-        
-    def __len__(self):
-        if self.UseBalance:
-            return self.reset_length
+
+        if alpha > 0:
+            #divide by 2 because mixup would use each sample twice in an epoch otherwise
+            self.len =int(np.floor(len(self.ordering)/batch_size)/2.0)
         else:
-            return int(np.floor(self.X_train.shape[0]/self.batch_size))
-    
-  
-          
+            self.len =int(np.floor(len(self.ordering)/batch_size))
+            
+        self.list1 = self.ordering.tolist()
+        self.list2 = list(reversed(self.list1))
+        
+        
     def ShuffleBalancedUnderSampling(self):
 
+        #create a list of each class, with indices randomly ordered
         EachClass=[]
         for i in range(self.num_classes):
+            #find the indices for this class
             Class_indices = np.where(self.y_labels==i)[0]
             
+            #order the indices for ths class randomly
             Class_ordering = np.arange(len(Class_indices))
             np.random.shuffle(Class_ordering)
             
             EachClass.append([Class_indices[j] for j in Class_ordering])
 
+        #add one sample from each class each time through
         SampleIndices = []
         Count=0
-        while True: 
-            #add one samples from each class each time through
+        while Count <  min(self.ClassCounts): 
+            
+            #add from a randomly chosen class
             rand_class_order= np.arange(self.num_classes)
             np.random.shuffle(rand_class_order)
             
@@ -122,58 +137,61 @@ class MixupGenerator(Sequence):
                 SampleIndices.append(EachClass[class_ind][Count])
             Count += 1
             
-            if len(self.ClassCounts)*Count >= self.reset_length*self.batch_size:
-                break
         return np.asarray(SampleIndices)
-
+    
+    
+    def __len__(self):
+        return self.len
+    
+    def on_epoch_end(self):
+            
+        if self.UseBalance:
+            self.ordering = self.ShuffleBalancedUnderSampling()
+        else:
+            np.random.shuffle(self.ordering)
+        self.list1 = self.ordering.tolist()
+        self.list2 = list(reversed(self.list1))
 
     def __getitem__(self, index):
         
-        #mixup random numbers for each sample
+        #samples for mixup combining
+        batch_ids1 = self.list1[index*self.batch_size:(index+1)*self.batch_size]
+        if self.alpha >0:
+            batch_ids2 = self.list2[index*self.batch_size:(index+1)*self.batch_size]
+        
+        #mixup weightings
         if self.alpha >0:
             mixup_weights = np.random.beta(self.alpha, self.alpha, self.batch_size)
         else:
             mixup_weights = np.zeros(self.batch_size)
-        X_mixup = mixup_weights.reshape(self.batch_size, 1, 1, 1)
-        y_mixup = mixup_weights.reshape(self.batch_size, 1)
-
-        #samples for mixup combining
-        batch_ids1 = self.ordering.tolist()[self.start_ind:self.start_ind+self.batch_size]
-        batch_ids2 = list(reversed(self.ordering.tolist()))[self.start_ind:self.start_ind+self.batch_size]   
-        X1 = copy.deepcopy(self.X_train[batch_ids1,:,:,:])
-        X2 = copy.deepcopy(self.X_train[batch_ids2,:,:,:])
-        
-        self.UseCount[batch_ids1]+=1
-        self.UseCount[batch_ids2]+=1
-        
-        for j in range(X1.shape[0]):
+       
+        #apply augmentation and mixup. We assume here two-channel input
+        X=np.zeros((self.batch_size,256,self.crop_length,self.num_channels))
+        for j in range(self.batch_size):
             
-            #random temporal cropping
-            StartLoc1 = np.random.randint(0,X1.shape[2]-self.NewLength)
-            StartLoc2 = np.random.randint(0,X2.shape[2]-self.NewLength)
-            X1[j,:,0:self.NewLength,:] = X1[j,:,StartLoc1:StartLoc1+self.NewLength,:]
-            X2[j,:,0:self.NewLength,:] = X2[j,:,StartLoc2:StartLoc2+self.NewLength,:]
+            #temporal crop
+            x1 = self.augmentation1(image=copy.deepcopy(self.X_train[batch_ids1[j],:,:,:]))['image']
+            if self.alpha >0:
+                x2 = self.augmentation1(image=copy.deepcopy(self.X_train[batch_ids2[j],:,:,:]))['image']
             
-            #randomly swap left and right channels, if we have stereo input
-            if X1.shape[-1]==2 or X1.shape[-1]==4 or X1.shape[-1]==6:
+            #random channel swap
+            if np.random.randint(2) == 1:
+                x1 = x1[:,:,::-1]
+            if self.alpha >0:
                 if np.random.randint(2) == 1:
-                    X1[j,:,:,:] = X1[j:j+1,:,:,self.swap_inds]
-                if np.random.randint(2) == 1:
-                    X2[j,:,:,:] = X2[j:j+1,:,:,self.swap_inds]
-            
-        #shorten to the cropped length  and apply mixup
-        X = X1[:,:,0:self.NewLength,:] * X_mixup + X2[:,:,0:self.NewLength,:] * (1.0 - X_mixup)
-        y = self.y_train[batch_ids1] * y_mixup +self.y_train[batch_ids2] * (1.0 - y_mixup)
+                    x2 = x2[:,:,::-1]
+                
+            #mixup
+            if self.alpha >0:
+                X[j,:,:,:] = x1 * mixup_weights[j] + x2 * (1.0 - mixup_weights[j])
+            else:
+                X[j,:,:,:] = x1
 
-        #update sample accounting
-        self.start_ind = self.start_ind + self.batch_size
-        if self.UseBalance:
-            if self.start_ind > self.reset_length*self.batch_size-self.batch_size:
-                self.ordering = self.ShuffleBalancedUnderSampling()
-                self.start_ind=0
+        #mixup for targets
+        if self.alpha >0:
+            y_mixup = mixup_weights.reshape(self.batch_size, 1)
+            Y = self.y_train[batch_ids1] * y_mixup +self.y_train[batch_ids2] * (1.0 - y_mixup)
         else:
-            if self.start_ind > self.X_train.shape[0]-self.batch_size:
-                np.random.shuffle(self.ordering)
-                self.start_ind=0
-            
-        return X, y
+            Y = self.y_train[batch_ids1]
+              
+        return X,Y  

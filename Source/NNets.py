@@ -1,5 +1,5 @@
 import tensorflow.keras
-from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, GlobalAveragePooling2D, AveragePooling2D, Lambda
+from tensorflow.keras.layers import Input, ReLU,Conv2D, BatchNormalization, Activation, GlobalAveragePooling2D, AveragePooling2D, Lambda
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.models import Model
 from tensorflow.keras import backend as K
@@ -9,7 +9,7 @@ from binary_layers_tf import BinaryConv2D
 def resnet_layer(inputs,num_filters=16,kernel_size=3,strides=1,learn_bn = True,wd=1e-4,use_relu=True,binarise_weights=False):
 
     x = inputs
-    x = BatchNormalization(center=learn_bn, scale=learn_bn)(x)
+    x = BatchNormalization(center=learn_bn, scale=learn_bn,epsilon=1e-5)(x)
     if use_relu:
         x = Activation('relu')(x)
     if binarise_weights == False:
@@ -24,12 +24,14 @@ def resnet_layer(inputs,num_filters=16,kernel_size=3,strides=1,learn_bn = True,w
 def Freq_split(x,chans):
     return x[:,chans[0]:chans[1],:,:] 
 
-def model_resnet_updated(num_classes,input_shape =[128,None,6], num_filters =24,wd=1e-3,binarise_weights=False):
+
+def model_resnet_DCASE2020_Task1b(num_classes,input_shape =[128,None,6], num_filters =24,wd=1e-3,binarise_weights=False,NotHybrid=True):
     
-    My_wd = wd #this is 5e-3 in matlab, so quite large
+    My_wd = wd 
     num_res_blocks=2
     
     inputs = Input(shape=input_shape)
+    
     
     #split up frequency into two branches
     Split1=  Lambda(Freq_split,arguments={'chans':[0,int(input_shape[0]/2)]})(inputs)
@@ -41,7 +43,7 @@ def model_resnet_updated(num_classes,input_shape =[128,None,6], num_filters =24,
                      learn_bn = True,
                      wd=My_wd,
                      use_relu = False,
-                     binarise_weights=binarise_weights)
+                     binarise_weights=NotHybrid)
     
     ResidualPath2 = resnet_layer(inputs=Split2,
                      num_filters=num_filters,
@@ -49,7 +51,7 @@ def model_resnet_updated(num_classes,input_shape =[128,None,6], num_filters =24,
                      learn_bn = True,
                      wd=My_wd,
                      use_relu = False,
-                     binarise_weights=binarise_weights)
+                     binarise_weights=NotHybrid)
 
     # Instantiate the stack of residual units
     for stack in range(4):
@@ -98,14 +100,15 @@ def model_resnet_updated(num_classes,input_shape =[128,None,6], num_filters =24,
             ResidualPath1 = tensorflow.keras.layers.add([ConvPath1,ResidualPath1])
             ResidualPath2 = tensorflow.keras.layers.add([ConvPath2,ResidualPath2])
             
-        #double the number of filters    
-        num_filters *= 2
+        #double the number of filters   
+        if stack <=2:
+            num_filters *= 2
         
 
-    ResidualPath = tensorflow.keras.layers.concatenate([ResidualPath1,ResidualPath2],axis=1)
+    ResidualPath = tensorflow.keras.layers.add([ResidualPath1,ResidualPath2])#tensorflow.keras.layers.concatenate([ResidualPath1,ResidualPath2],axis=1)
     
     OutputPath = resnet_layer(inputs=ResidualPath,
-                             num_filters=num_filters,
+                             num_filters=192,
                               kernel_size=3,
                              strides=1,
                              learn_bn = False,
@@ -120,13 +123,14 @@ def model_resnet_updated(num_classes,input_shape =[128,None,6], num_filters =24,
                      kernel_size=1,
                      learn_bn = False,
                      wd=My_wd,
-                     use_relu=False,
+                     use_relu=True,
                      binarise_weights=binarise_weights)
-    OutputPath = BatchNormalization(center=True, scale=True)(OutputPath)
+    OutputPath = BatchNormalization(center=True, scale=True,epsilon=1e-5)(OutputPath)
     OutputPath = GlobalAveragePooling2D()(OutputPath)
     OutputPath = Activation('softmax')(OutputPath)
 
     # Instantiate model.
     model = Model(inputs=inputs, outputs=OutputPath)
     return model
+
 

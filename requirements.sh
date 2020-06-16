@@ -12,6 +12,7 @@ conda install -y -c conda-forge librosa
 
 pip install zenodo_get 
 pip install SoundFile
+pip install albumentations
 
 mkdir Data
 cd Data
