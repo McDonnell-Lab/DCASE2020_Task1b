@@ -1,3 +1,4 @@
+#Author: Mark McDonnell, mark.mcdonnell@unisa.edu.au
 import tensorflow.keras
 from tensorflow.keras.layers import Input, ReLU,Conv2D, BatchNormalization, Activation, GlobalAveragePooling2D, AveragePooling2D, Lambda
 from tensorflow.keras.regularizers import l2

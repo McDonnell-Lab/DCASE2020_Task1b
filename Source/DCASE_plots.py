@@ -1,3 +1,4 @@
+#Author: Mark McDonnell, mark.mcdonnell@unisa.edu.au
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import numpy as np

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#Author: Mark McDonnell, mark.mcdonnell@unisa.edu.au
 import numpy as np
 
 from tensorflow.keras import backend as K

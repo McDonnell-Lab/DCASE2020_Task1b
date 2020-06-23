@@ -1,3 +1,4 @@
+#Author: Mark McDonnell, mark.mcdonnell@unisa.edu.au
 import tensorflow.keras
 from tensorflow.keras import backend as K
 from tensorflow.keras.utils  import Sequence
