@@ -1,3 +1,7 @@
+# Author
+
+Mark McDonnell, mark.mcdonnell@unisa.edu.au
+
 # Introduction
 
 This repository contains code aligned with an entry to DCASE 2020 Challenge Task 1B.
