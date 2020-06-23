@@ -34,8 +34,11 @@ Or on ubuntu run:
 Open a terminal and run:
 
 >> bash requirements.sh
-
-This will create a new anaconda environment, and download packages needed.
+s
+This will  do the following:
+* create a new anaconda environment
+* download required python libraries
+* download the development dataset (not the evaluation dataset)
 
 The script makes use of this tool: https://gitlab.com/dvolgyes/zenodo_get for  downloading.
 
