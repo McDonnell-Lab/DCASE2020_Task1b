@@ -17,7 +17,7 @@ For example, first download this repositor, e.g. go to https://github.com/McDonn
 
 Or on ubuntu run: 
 
->> git clone https://github.com/McDonnell-Lab/DCASE2020_Task1b.git)
+>> git clone https://github.com/McDonnell-Lab/DCASE2020_Task1b.git
 
 Open a terminal and run:
 
