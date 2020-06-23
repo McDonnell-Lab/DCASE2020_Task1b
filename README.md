@@ -45,7 +45,7 @@ To inspect and download data manually:
 
 # Training and validation
 
--first run Task1b_make_spectrograms.ipynb
--next try running Source/Notebooks/Task1b_for_Github_train_and_validate.ipynb
--for full "leave one city out" (LOCO) cross-validation, run Task1b_final_design_LOCO.ipynb
+* first run Task1b_make_spectrograms.ipynb
+* next try running jupyter notebook Source/Notebooks/Task1b_for_Github_train_and_validate.ipynb
+* for full "leave one city out" (LOCO) cross-validation, run jupyter notebook Source/Notebooks/Task1b_final_design_LOCO.ipynb
 
