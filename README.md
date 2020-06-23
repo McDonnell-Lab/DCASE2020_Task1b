@@ -13,7 +13,7 @@ This repository contains a script that can automatically download and unzip the 
 
 You must have anaconda installed on linux for the script to work.
 
-For example, first download this repository (e.g. go to https://github.com/McDonnell-Lab/DCASE2020_Task1b and click on "Download zip"  then copy to your desired location and unzip (git clone will only work if you have security keys set up).
+For example, first download this repository (e.g. go to https://github.com/McDonnell-Lab/DCASE2020_Task1b and click on "Download zip"  then copy to your desired location and unzip; or on ubuntu run: >> git clone https://github.com/McDonnell-Lab/DCASE2020_Task1b.git)
 
 Open a terminal and run:
 
