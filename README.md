@@ -56,3 +56,9 @@ To inspect and download data manually:
 * next try running jupyter notebook Source/Notebooks/Task1b_for_Github_train_and_validate.ipynb
 * for full "leave one city out" (LOCO) cross-validation, run jupyter notebook Source/Notebooks/Task1b_final_design_LOCO.ipynb
 
+# Verification that trained 500KB model works
+
+* run jupyter notebook Source/Notebooks/Task1b_saved_model_1_bit_per_weight_storage.ipynb
+* The notebook shows a validation accuracy of 96.87% and 486.6943359375 KB for convolutional weight storage
+* The notebook creates a .mat file that contains all the binary weights that uses 592 KB on disk (there is about 100KB of overheads stored in it).
+
