@@ -1,4 +1,12 @@
+#Introduction
+
+This repository contains code aligned with an entry to DCASE 2020 Challenge Task 1B.
+
 Information on the DCASE challenge can be found here: http://dcase.community/challenge2020/task-acoustic-scene-classification
+
+A technical report on the challenge entry can be found at https://github.com/McDonnell-Lab/DCASE2020_Task1b/TechnicalReport/
+
+#Installation
 
 For this repository (https://github.com/McDonnell-Lab/DCASE2020_Task1b), the following are strongly recommended:
 
@@ -34,4 +42,10 @@ After this has finished, run
 To inspect and download data manually:
 
 -download Task 1b data from here: https://zenodo.org/record/3670185#.XmW-ehdLfUp
+
+#Training and validation
+
+-first run Task1b_make_spectrograms.ipynb
+-next try running Source/Notebooks/Task1b_for_Github_train_and_validate.ipynb
+-for full "leave one city out" (LOCO) cross-validation, run Task1b_final_design_LOCO.ipynb
 
